@@ -6,14 +6,16 @@ from torchvision.models import resnet50
 from torch.autograd import Variable
 import torch
 import pickle
+from tqdm import tqdm
 
 class extractImageFeature:
-    def __init__(self, data):
+    def __init__(self, data, image_dir):
         self.data = data
+        self.location = image_dir
         self.transforms = transforms.Compose([
             transforms.Resize((224, 224)),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            transforms.ToTensor()
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
     
     def __len__(self):
@@ -21,7 +23,7 @@ class extractImageFeature:
     
     def __getitem__(self, idx):
         image_name = self.data.iloc[idx]['image']
-        image_loc = 'flickr8k/Images/'+image_name
+        image_loc = self.location + '/' + image_name
 
         img = Image.open(image_loc)
         transformed_img = self.transforms(img)
@@ -29,8 +31,8 @@ class extractImageFeature:
         return image_name, transformed_img
 
 
-def get_dataloader(data, batch_size = 1):
-    image_dataset = extractImageFeature(data)
+def get_dataloader(data, image_dir, batch_size = 1):
+    image_dataset = extractImageFeature(data, image_dir)
     image_dataloader = DataLoader(image_dataset, batch_size = batch_size, shuffle = False)
     return image_dataloader
 
@@ -41,9 +43,9 @@ class encode:
         self.resnet = resnet50(pretrained = True).to(device)
         self.resnet_layer4 = self.resnet._modules.get('layer4').to(device)
 
-    def get_vector(self, image):
+    def get_vector(self, image, batch_size):
         image = Variable(image)
-        my_embedding = torch.zeros(1, 512, 7, 7)
+        my_embedding = torch.zeros(batch_size, 2048, 7, 7)
         def copy_data(m, i, o):
             my_embedding.copy_(o.data)
         h = self.resnet_layer4.register_forward_hook(copy_data)
@@ -51,13 +53,13 @@ class encode:
         return my_embedding
     
 
-def get_feature(data, device, batch_size = 1):
-    dataloader = get_dataloader(data, batch_size)
+def get_feature(data, image_dir, device, batch_size = 1):
+    dataloader = get_dataloader(data, image_dir, batch_size)
 
     image_feature = {}
-    for image_name, image in dataloader:
+    for image_name, image in tqdm(dataloader):
         image = image.to(device)
-        embedding = encode(device).get_vector(image)
+        embedding = encode(device).get_vector(image, batch_size)
 
         image_feature[image_name[0]] = embedding
 
