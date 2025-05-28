@@ -23,6 +23,7 @@ class PreProcess:
         for caption in data['cleaned_captions']:
             if len(caption) > max_seq_length:
                 max_seq_length = len(caption)
+        self.max_seq_length = max_seq_length
 
         data['cleaned_captions'] = data['cleaned_captions'].apply(lambda x: x + ['<pad>']*(max_seq_length - len(x)))
 

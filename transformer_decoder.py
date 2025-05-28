@@ -25,6 +25,7 @@ class resnetData:
 def get_resnet_dataloader(data, pkl_file, batch_size=32):
     dataset_resnet = resnetData(data, pkl_file)
     dataloader_resnet = DataLoader(dataset_resnet, batch_size = batch_size, shuffle = True)
+    return dataloader_resnet
 
 class PositionalEmbedding(nn.Module):
     def __init__(self, d_model, max_length, device, dropout = 0.1):

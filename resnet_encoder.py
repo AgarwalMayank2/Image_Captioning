@@ -7,6 +7,8 @@ from torch.autograd import Variable
 import torch
 import pickle
 from tqdm import tqdm
+import warnings
+warnings.filterwarnings("ignore")
 
 class extractImageFeature:
     def __init__(self, data, image_dir):
