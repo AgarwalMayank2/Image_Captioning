@@ -5,7 +5,7 @@ import resnet_encoder
 import transformer_decoder
 import pandas as pd
 
-num_epochs = 30
+num_epochs = 40
 batch_size = 32
 learning_rate = 0.00001
 
