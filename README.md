@@ -20,3 +20,6 @@ The dataset used is the Flickr8k dataset, which contains over 8000 images. The e
 4. Set the path to your image in the `image_loc` variable.  
 5. Run the notebook to generate a caption.
 
+For training the model, run the `main.py` file.
+
+#### For Webdemo refer to the following github repo:- https://github.com/shreekar2005/image_cap_webdemo
