@@ -10,3 +10,13 @@ This project implements an Image Captioning system that generates natural langua
 `main.py`: Integrates all components—preprocessing, encoding, decoding, and training—into a cohesive pipeline for model training.  
 `model_test.ipynb`:A Jupyter notebook used to test the trained model on sample images and visualize the generated captions.  
 
+## Dataset  
+The dataset used is the Flickr8k dataset, which contains over 8000 images. The entire dataset has been used for training.
+
+## Usage  
+1. Clone the repository.  
+2. Place your test image in the `test_images` folder.  
+3. Open the `model_test.ipynb` notebook.  
+4. Set the path to your image in the `image_loc` variable.  
+5. Run the notebook to generate a caption.
+
