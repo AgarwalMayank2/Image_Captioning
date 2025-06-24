@@ -4,3 +4,9 @@ This project implements an Image Captioning system that generates natural langua
 
 # Model Architecture
 `pre_processing.py`: Building the vocab from the data.
+`resnet_encoder.py`: For encoding the given image. In this project I have used Resnet-50. The encoded data will be saved as `EncodedImageResnet.pkl`
+`transformer_decoder.py`: For decoding the encoded images and predicting the caption.
+`train.py`: Consists the main traning loop.
+`main.py`: Intergrates all the files together for tranining purpose.
+`model_test.ipynb`: Model testing has been done in this file.
+
